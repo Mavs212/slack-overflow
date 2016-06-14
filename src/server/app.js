@@ -1,5 +1,4 @@
 // *** main dependencies *** //
-require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,13 +9,26 @@ var swig = require('swig');
 var flash = require('connect-flash');
 var session = require('express-session');
 var Promise = require('bluebird');
-var passport = require('./lib/auth');
+var passport = require('./lib/passport');
 var knex = require('../../db/knex');
-var cookieSession = require('cookie-session');
+var helpers = require('./lib/helpers');
+var bot = require('./bot');
+if ( !process.env.NODE_ENV ) { require('dotenv').config(); }
+
+
+//start bot
+bot();
 
 
 // *** routes *** //
-var routes = require('./routes/index.js');
+var routes = require('./routes/index');
+var authRoutes  = require('./routes/auth');
+var assignmentRoutes = require('./routes/assignments');
+var questionRoutes = require('./routes/questions');
+var slackRoutes = require('./routes/slack');
+var loginRoutes = require('./routes/login');
+var logoutRoute = require('./routes/logout');
+var answerRoutes = require('./routes/answers');
 
 
 // *** express instance *** //
@@ -38,10 +50,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cookieSession({
-  name: 'change_me',
-  keys: [process.env.KEY1, process.env.KEY2, process.env.KEY3]
-}));
 app.use(express.static(path.join(__dirname, '../client')));
 app.use(session({
   secret: process.env.SECRET_KEY || 'change_me',
@@ -52,22 +60,16 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// *** configure passport *** //
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  knex('users').where('id', id)
-    .then(function(data) {
-      return done(null, data[0]);
-    }).catch(function(err) {
-      return done(err, null);
-    });
-});
 
 // *** main routes *** //
 app.use('/', routes);
+app.use('/auth', authRoutes);
+app.use('/assignments', assignmentRoutes);
+app.use('/questions', questionRoutes);
+app.use('/slack', slackRoutes);
+app.use('/login', loginRoutes);
+app.use('/logout', logoutRoute);
+app.use('/answers', answerRoutes);
 
 
 // catch 404 and forward to error handler

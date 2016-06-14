@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+
+{% block title %}{% endblock %}
+
+
+{% block content %}
+
+<article class='container-fluid qa-box'>
+  <div class='row'>
+    <div class='col-md-12'>
+      <h5>Posted by {{ question.username }}</h5>
+    </div>
+    <div class='col-md-2'></div>
+  </div>
+  <div class='row'>
+    <div class='col-md-1'>
+      <div class='vote'>
+        <a class="vote-up-q" title="This question shows research effort; it is useful and clear"></a>
+        <span id='{{ question.id }}' class="vote-count">{% if question.score %}{{ question.score }}{% else %} 0 {% endif %}</span>
+        <a class="vote-down-q" title="This question does not show any research effort; it is unclear or not useful"></a>
+      </div>
+    </div>
+    <div class='col-md-11'>
+      <div class='markdown-text'>{{ question.body }}</div>
+    </div>
+  </div>
+  <div class='row tag-row'>
+    <div class='col-md-1'></div>
+    <div class='col-md-10'>
+      <button id='subscribe' class='btn btn-sm btn-warning'>Subscribe</button>
+      <button id='unsubscribe' class='btn btn-sm btn-warning form-hidden'>Unsubscribe</button>
+      {% for tag in tags %}
+      <div class='btn btn-sm btn-info'>{{ tag }}</div>
+      {% endfor %}
+    </div>
+    <div class='col-md-1'></div>
+  </div>
+</article>
+
+<a class='answer-button' href='/questions/{{ question.id }}/answer'><button class='btn btn-sucess btn-sm'>Answer This Question</button></a>
+{% if question.flag_status === false %}
+  <a class='answer-button' href='/questions/{{ question.id }}/flag'><button class='btn btn-success button-warning'>Flag as Inappropriate</button></a>
+{% endif %}
+{% if user.auth_id === 2 %}
+  <a class='answer-button' href='/questions/{{question.id}}/delete'><button class='btn btn-danger btn-sm'>Delete Question</button></a>
+  {% if question.flag_status === true %}
+    <a class='answer-button' href='/questions/{{ question.id }}/unflag'><button class='btn btn-success button-warning'>Unflag Question</button></a>
+  {% endif %}
+{% endif %}
+<hr>
+
+<h2 class='answer-header'>Answers</h2>
+
+{% for answer in answers %}
+  <article class='container-fluid qa-box'>
+    <div class='row'>
+      <div class='col-md-12'>
+        <h3>{{ answer.title }}</h3>
+        <h5>Posted by {{ answer.username }}</h5>
+      </div>
+      <div class='col-md-2'></div>
+    </div>
+    <div class='row'>
+      <div class='col-md-1'>
+        <div class='vote'>
+          <a class="vote-up-a" title="This question shows research effort; it is useful and clear"></a>
+          <span id='{{ answer.id }}' class="vote-count">{% if answer.score %}{{ answer.score }}{% else %} 0 {% endif %}</span>
+          <a class="vote-down-a" title="This question does not show any research effort; it is unclear or not useful"></a>
+        </div>
+      </div>
+      <div class='col-md-11'>
+        <div class='markdown-text'>{{ answer.body }}</div>
+        {% if answer.flag_status === false %}
+        <a class='answer-button' href='/questions/{{ question.id }}/answer/{{ answer.id }}/flag'><button class='btn btn-success button-warning'>Flag as Inappropriate</button></a>
+        {% endif %}
+        {% if user.auth_id === 2 %}
+        <a class='answer-button' href='/questions/{{ question.id }}/answer/{{ answer.id }}/delete'><button class='btn btn-danger btn-sm'>Delete Answer</button></a>
+          {% if answer.flag_status === true %}
+            <a class='answer-button' href='/questions/{{ question.id }}/answer/{{ answer.id }}/unflag'><button class='btn btn-success button-warning'>Unflag Question</button></a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </article>
+{% endfor %}
+
+
+{% endblock %}

@@ -1,15 +1,119 @@
-{% extends 'layout.html' %}
+      {% extends 'layout.html' %}
 
 {% block title %}{% endblock %}
 
 
 {% block content %}
 
-  <div class="container">
+  <div class="container-fluid">
+    <article>
+      <h1>Welcome to Slack Overflow for Galvanize!</h1>
+      <p>An archive for questions, answers, and resources posted here and in your Slack channel.</p>
+      <p>To get the most out of this site, sign up and authorize Slack acess.</p>
+    </article>
+  </div>
 
-    <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}</p>
+  <div class='container-fluid'>
+    <div class='row'>
+      <div class='col-md-9'>
+        <main>
+          <div class='subheader'>
+            <h2>Top Questions</h2>
+          </div>
+          {% for question in questions %}
+            <article class='question-summary flex-container'>
+              <div class='flex-item-size-1'>
+                <h4>{{ question.score }}</h4>
+                <p>rating</p>
+              </div>
+              <div class='flex-item-size-1'>
+              {% for index in answerCount %}
+                {% if question.id === index.question_id %}
+                  {% set count = index.count %}
+                {% else %}
+                  {% set count = 0 %}
+                {% endif %}
+              {% endfor %}
+              <h4>{{ count }}</h4>
+                <p>answers</p>
+              </div>
+              <div class='flex-item-size-3'>
+                <a href='questions/{{ question.id }}'><h5 class='truncate'>{{ question.body }}</h5></a>
+                <h6>Posted by {{ question.username }}</h6>
+                <div class='tag-collection'>
+                  {% for tag in tags %}
+                    {% if question.id === tag.question_id %}
+                      <div class='btn btn-sm btn-info'>{{ tag.tag_name }}</div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </main>
+      </div>
 
+      <div class='col-md-2'>
+        <aside>
+          <h3>Sort Questions</h3>
+            <!-- sort by tag -->
+            <form action='sort/tags' method='post'>
+              <div class='form-group'>
+                <input type='text' name='sort_tags'>
+                <input type='submit' class='btn btn-sm btn-primary' value='Search by Tag'>
+              </div>
+            </form>
+
+            <!-- sort by week -->
+              <form action='assignments' method='GET'>
+              <div class='form-group'>
+               <p>Select Week</p>
+                <select name='week' required>
+                  <option label= "">--</option>
+                  <option value='1'>week 1</option>
+                  <option value='2'>week 2</option>
+                  <option value='3'>week 3</option>
+                  <option value='4'>week 4</option>
+                  <option value='5'>week 5</option>
+                  <option value='6'>week 6</option>
+                  <option value='7'>week 7</option>
+                  <option value='8'>week 8</option>
+                  <option value='9'>week 9</option>
+                  <option value='10'>week 10</option>
+                  <option value='11'>week 11</option>
+                  <option value='12'>week 12</option>
+                  <option value='13'>week 13</option>
+                  <option value='14'>week 14</option>
+                  <option value='15'>week 15</option>
+                  <option value='16'>week 16</option>
+                  <option value='17'>week 17</option>
+                  <option value='18'>week 18</option>
+                  <option value='19'>week 19</option>
+                  <option value='20'>week 20</option>
+                  <option value='21'>week 21</option>
+                  <option value='22'>week 22</option>
+                  <option value='23'>week 23</option>
+                  <option value='24'>week 24</option>
+                </select><br>
+              </div>
+
+             <!-- sort by cohort -->
+              <div class='form-group'>
+               <p>Select Cohort</p>
+                <select name='group'>
+                  <option value='1'>G19</option>
+                  <option value='2'>G20</option>
+                </select><br><br>
+               <input type=submit id='sort-unanswered' class='btn btn-sm btn-primary' value='Load Assignments'>
+              </div>
+           </form>
+
+
+        </aside>
+      </div>
+      <div class='col-md-1'>
+      </div>
+    </div>
   </div>
 
 {% endblock %}

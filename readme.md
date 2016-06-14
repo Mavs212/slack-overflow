@@ -1,6 +1,6 @@
-# Slack Overflow
 ## The G19 Davids' Group CRUD Project
 A collaborative Q/A forum for cohorts of coding bootcamps.
+# Slack Overflow
 
 ## Project Description
 Slack Overflow is an app that allows cohort members (instructors/students) to communicate better. Students can post questions and others can post answers. The app receives questions and answers two ways. First via traditional forum interfaces; second by pulling posts from Slack channels.
@@ -8,6 +8,14 @@ Slack Overflow is an app that allows cohort members (instructors/students) to co
 
 ### Who uses it?
 Coding bootcamps run the app for their entire program. In the traditional interface Slack Overflow authenticates users as bootcamp members. The app detects users/cohorts on Slack and posts in the matching board.  Students use it to ask and answer questions about class topics. Instructors use it to check understanding, and answer questions when appropriate.
+
+
+### Screenshots
+
+![alt text](/screenshot1.png "Screenshot 1")
+![alt text](/screenshot2.png "Screenshot 2")
+![alt text](/screenshot3.png "Screenshot 3")
+![alt text](/screenshot4.png "Screenshot 4")
 
 
 ### What outputs do they need?
