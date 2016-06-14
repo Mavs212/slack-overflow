@@ -1,5 +1,9 @@
 ## The G19 Davids' Group CRUD Project
+
+
 A collaborative Q/A forum for cohorts of coding bootcamps.
+Deployed to [http://slackoverflowapp.herokuapp.com] (http://slackoverflowapp.herokuapp.com) but must be a Galvanize member to login.
+
 # Slack Overflow
 
 ## Project Description
